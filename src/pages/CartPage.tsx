@@ -81,7 +81,7 @@ export default function CartPage() {
           <div className="p-4">
             <div className="flex items-center justify-between my-4">
               <h2 className="text-2xl font-bold">Total:</h2>
-              <h2 className="text-2xl font-bold">${totalPrice}</h2>
+              <h2 className="text-2xl font-bold">${totalPrice.toFixed(2)}</h2>
             </div>
             <div className="flex items-center mt-6 gap-4">
               <Link
