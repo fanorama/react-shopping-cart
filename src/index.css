@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --border: 214.3 31.8% 91.4%;
+}
+
+* {
+  @apply border-gray-200;
+}
+
+body {
+  @apply antialiased;
+}
+
+@layer components {
+  .product-card {
+    @apply relative transition-all duration-300 bg-white shadow-lg rounded-lg overflow-hidden;
+  }
+
+  .product-image {
+    @apply aspect-square object-cover w-full transition-transform duration-300;
+  }
+
+  .product-card:hover .product-image {
+    @apply scale-105;
+  }
+}
