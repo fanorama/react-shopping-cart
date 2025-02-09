@@ -11,11 +11,12 @@ interface CartItem {
 interface CartContextType {
   items: CartItem[];
   addItem: (item: Omit<CartItem, "quantity">) => void;
-  removeItem: (id: number, quantity: number) => void;
+  removeItem: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
+  totalProducts: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -41,10 +42,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems((currentItems) => currentItems.filter((item) => item.id !== id));
   }, []);
 
-  const updateQuantity = () => {};
+  const updateQuantity = useCallback((id: number, quantity: number) => {
+    setItems((currentItems) =>
+      currentItems.map((item) =>
+        item.id === id ? { ...item, quantity: Math.max(0, quantity) } : item
+      )
+    );
+  }, []);
   const clearCart = () => {};
-  const totalItems = 0.0;
-  const totalPrice = 0.0;
+  const totalItems = items.reduce((sum, value) => sum + value.quantity, 0);
+  const totalPrice = items.reduce(
+    (sum, value) => sum + value.price * value.quantity,
+    0
+  );
+  const totalProducts = items.length;
 
   return (
     <CartContext.Provider
@@ -56,6 +67,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         clearCart,
         totalItems,
         totalPrice,
+        totalProducts,
       }}
     >
       {children}
